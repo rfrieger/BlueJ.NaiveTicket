@@ -1,3 +1,5 @@
+ 
+
 /**
  * TicketMachine models a naive ticket machine that issues
  * flat-fare tickets.
@@ -9,27 +11,37 @@
  * @author David J. Barnes and Michael Kolling
  * @version 2008.03.30
  */
-public class TicketMachine
+class TicketMachine
 {
     // The price of a ticket from this machine.
-    private int price;
+    private int price ;
     // The amount of money entered by a customer so far.
     private int balance;
     // The total amount of money collected by this machine.
     private int total;
+    
+    private int amountLeftToPay = price - balance;
 
+    
     /**
      * Create a machine that issues tickets of the given price.
      * Note that the price must be greater than zero, and there
      * are no checks to ensure this.
      */
-    public TicketMachine(int ticketCost)
+    public TicketMachine()
     {
-        price = ticketCost;
+        price = 1000;
         balance = 0;
         total = 0;
     }
-
+    
+    public TicketMachine(int ticketPrice)
+    {
+        price = ticketPrice;
+        balance = 0;
+        total = 0;
+    }
+    
     /**
      * Return the price of a ticket.
      */
@@ -38,6 +50,10 @@ public class TicketMachine
         return price;
     }
 
+    public void setPrice(int ticketCost) {
+        price = ticketCost;
+    }
+        
     /**
      * Return the amount of money already inserted for the
      * next ticket.
@@ -55,6 +71,18 @@ public class TicketMachine
         balance = balance + amount;
     }
 
+    public void promt() {
+        System.out.println ("Please insert the correct amount of money");
+    }
+    
+    public void showPrice() {
+        System.out.println ("The Price of a ticket is " + price + "cents.");
+
+    }
+    
+    public void empty() {
+        total = 0;
+    }
     /**
      * Print a ticket.
      * Update the total collected and
@@ -62,17 +90,28 @@ public class TicketMachine
      */
     public void printTicket()
     {
-        // Simulate the printing of a ticket.
-        System.out.println("##################");
-        System.out.println("# The BlueJ Line");
-        System.out.println("# Ticket");
-        System.out.println("# " + price + " cents.");
-        System.out.println("##################");
-        System.out.println();
-
-        // Update the total collected with the balance.
-        total = total + balance;
-        // Clear the balance.
-        balance = 0;
+        if (amountLeftToPay <= 0){
+            // Simulate the printing of a ticket.
+            System.out.println("##################");
+            System.out.println("# The BlueJ Line");
+            System.out.println("# Ticket");
+            System.out.println("# " + price + " cents.");
+            System.out.println("##################");
+            System.out.println();
+            // Update the total collected with the balance.
+            total = total + balance;
+            // Clear the balance.
+            balance = balance - price;
+        }else {
+            
+            System.out.println("You must insert " + (amountLeftToPay) + " more cents");
+        }
+        
+    }
+    
+    public int emptyMachine() {
+        int moneyToEmpty = total;
+        total = 0;
+        return moneyToEmpty;
     }
 }
